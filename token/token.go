@@ -25,6 +25,10 @@ const (
 	LT       = "<"
 	GT       = ">"
 
+	// two-char operators
+	EQ     = "=="
+	NOT_EQ = "!="
+
 	// delimiters
 	COMMA     = ","
 	SEMICOLON = ";"
