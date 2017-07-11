@@ -266,18 +266,35 @@ func TestSimpleExpressionParsing(t *testing.T) {
 	if exp.String() != "((1 + 2) + 3)" {
 		t.Fatalf("exp.Left is not '((1 + 2) + 3)'. got=%s", exp.String())
 	}
+}
 
-	//if exp.Left.String() != "(1 + 2)" {
-	//	t.Fatalf("exp.Left is not '(1 + 2)'. got=%s", exp.Left.String())
-	//}
-	//
-	//if exp.Operator != "+" {
-	//	t.Fatalf("exp.Operator is not '+'. got=%s", exp.Operator)
-	//}
-	//
-	//if exp.Right.String() != "3" {
-	//	t.Fatalf("exp.Left is not '(1 + 2)'. got=%s", exp.Left.String())
-	//}
+func TestSimpleExpressionParsing1(t *testing.T) {
+	input := "-1 + 2"
+
+	l := lexer.New(input)
+	p := New(l)
+	program := p.ParseProgram()
+	checkParserErrors(t, p)
+
+	if len(program.Statements) != 1 {
+		t.Fatalf("program.Statements does not contain %d statements. got=%d\n",
+			1, len(program.Statements))
+	}
+
+	stmt, ok := program.Statements[0].(*ast.ExpressionStatement)
+	if !ok {
+		t.Fatalf("program.Statements[0] is not ast.ExpressionStatement. got=%T",
+			program.Statements[0])
+	}
+
+	exp, ok := stmt.Expression.(*ast.InfixExpression)
+	if !ok {
+		t.Fatalf("exp is not ast.InfixExpression. got=%T", stmt.Expression)
+	}
+
+	if exp.String() != "((-1) + 2)" {
+		t.Fatalf("exp.Left is not '((-1) + 2)'. got=%s", exp.String())
+	}
 }
 
 func TestOperatorPrecedenceParsing(t *testing.T) {
