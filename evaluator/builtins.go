@@ -1,6 +1,9 @@
 package evaluator
 
-import "github.com/joeygibson/monkey/object"
+import (
+	"github.com/joeygibson/monkey/object"
+	"time"
+)
 
 var builtins = map[string]*object.Builtin{
 	"len": &object.Builtin{
@@ -15,6 +18,16 @@ var builtins = map[string]*object.Builtin{
 			default:
 				return newError("argument to `len` not supported, got %s", args[0].Type())
 			}
+		},
+	},
+	"now": &object.Builtin{
+		Fn: func(args ...object.Object) object.Object {
+			if len(args) != 0 {
+				return newError("wrong number of arguments. got=%d, want=0", len(args))
+			}
+
+			now := time.Now()
+			return &object.String{Value: now.String()}
 		},
 	},
 }
