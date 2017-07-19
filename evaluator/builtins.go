@@ -30,4 +30,14 @@ var builtins = map[string]*object.Builtin{
 			return &object.String{Value: now.String()}
 		},
 	},
+	"nowInMillis": &object.Builtin{
+		Fn: func(args ...object.Object) object.Object {
+			if len(args) != 0 {
+				return newError("wrong number of arguments. got=%d, want=0", len(args))
+			}
+
+			millis := time.Now().UnixNano() / int64(time.Millisecond)
+			return &object.Integer{Value: millis}
+		},
+	},
 }
