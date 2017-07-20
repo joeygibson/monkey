@@ -305,6 +305,19 @@ func TestBuiltinFunctions(t *testing.T) {
 		{`len("hello world")`, 11},
 		{`len(1)`, "argument to `len` not supported, got INTEGER"},
 		{`len("one", "two")`, "wrong number of arguments. got=2, want=1"},
+		{`len([1, 2, 3])`, 3},
+		{`len([])`, 0},
+		{`first([1, 2, 3])`, 1},
+		{`first([1])`, 1},
+		{`first([])`, NULL},
+		{`last([1, 2, 3])`, 3},
+		{`last([1])`, NULL},
+		{`last([])`, NULL},
+		{`rest([1, 2, 3])`, []int{2, 3}},
+		{`rest([1])`, NULL},
+		{`rest([])`, NULL},
+		{`push([1, 2, 3], 23)`, []int{2, 3, 23}},
+		{`push([], 23)`, []int{23}},
 	}
 
 	for _, tt := range tests {
