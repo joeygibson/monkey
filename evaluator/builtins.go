@@ -1,6 +1,7 @@
 package evaluator
 
 import (
+	"fmt"
 	"github.com/joeygibson/monkey/object"
 	"time"
 )
@@ -126,6 +127,19 @@ var builtins = map[string]*object.Builtin{
 			default:
 				return newError("argument to `last` not supported, got %s", args[0].Type())
 			}
+		},
+	},
+	"puts": {
+		Fn: func(args ...object.Object) object.Object {
+			if len(args) == 0 {
+				return newError("wrong number of arguments. got=%d, want=> 0", len(args))
+			}
+
+			for _, arg := range args {
+				fmt.Println(arg.Inspect())
+			}
+
+			return NULL
 		},
 	},
 }
